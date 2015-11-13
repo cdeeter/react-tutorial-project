@@ -11,10 +11,10 @@ var Comment = React.createClass({
     render: function() {
         return (
             <div className="comment">
-                <h2 className="commentAuthor">
+                <span className="commentAuthor">
                     {this.props.author}
-                </h2>
-                <span dangerouslySetInnerHTML={this.rawMarkup()} />
+                </span> says:
+                <div dangerouslySetInnerHTML={this.rawMarkup()} />
             </div>
         );
     }
@@ -27,7 +27,7 @@ var CommentBox = React.createClass({
             dataType: 'json',
             cache: false,
             success: function(data) {
-                this.setState({data: data});
+                this.setState({data: data.reverse()});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -37,7 +37,7 @@ var CommentBox = React.createClass({
     handleCommentSubmit: function(comment) {
         var comments = this.state.data;
         comment.id = Date.now();
-        var newComments = comments.concat([comment]);
+        var newComments = comments.unshift([comment]);
         this.setState({data: newComments});
         $.ajax({
             url: this.props.url,
@@ -62,9 +62,9 @@ var CommentBox = React.createClass({
     render: function() {
         return (
             <div className="commentBox">
-                <h1>Comments</h1>
-                <CommentList data={this.state.data} />
+                <h1>Comment Board</h1>            
                 <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+                <CommentList data={this.state.data} />
             </div>
         );
     }
@@ -91,7 +91,7 @@ var CommentForm = React.createClass({
     handleSubmit: function(e) {
         e.preventDefault();
         var author = this.refs.author.value.trim();
-        var test = this.refs.text.value.trim();
+        var text = this.refs.text.value.trim();
         if (!text || !author) {
             return;
         }
@@ -102,11 +102,13 @@ var CommentForm = React.createClass({
     },
     render: function() {
         return (
-            <form className="commentForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Your name" ref="author" />
-                <input type="text" placeholder="Say something..." ref="text" />
-                <input type="submit" value="Post" />
-            </form>
+            <div className="commentSection">
+                <form className="commentForm" onSubmit={this.handleSubmit}>
+                    <input type="text" className="authorName" placeholder="Your name" ref="author" /><br/>
+                    <textarea type="text" className="commentText" placeholder="Say something..." ref="text" /><br/>
+                    <input type="submit" className="submitComment" value="Post" />
+                </form>
+            </div>
         );
     }
 });
