@@ -4,6 +4,10 @@
 
 This is the React comment box example from [the React tutorial](http://facebook.github.io/react/docs/tutorial.html).
 
+Original code is in `public/scripts/example.js`
+
+My code from following the tutorial is in `public/scripts/app.js`
+
 ## To use
 
 There are several simple server implementations included. They all serve static files from `public/` and handle requests to `/api/comments` to fetch or add data. Start a server with one of the following:

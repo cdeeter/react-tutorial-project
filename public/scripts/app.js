@@ -1,4 +1,6 @@
-/*** Celia's code, following the tutorial ***/
+/*** 
+    Celia's code, following the tutorial 
+***/
 
 var Comment = React.createClass({
     rawMarkup: function() {
